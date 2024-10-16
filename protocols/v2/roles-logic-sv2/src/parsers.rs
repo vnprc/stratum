@@ -48,7 +48,7 @@ use tracing::error;
 
 pub type AnyMessage<'a> = PoolMessages<'a>;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 #[cfg_attr(feature = "with_serde", derive(Serialize, Deserialize))]
 pub enum CommonMessages<'a> {
     ChannelEndpointChanged(ChannelEndpointChanged),

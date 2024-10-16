@@ -1,11 +1,16 @@
 [package]
 name = "network_helpers_sv2"
 version = "2.0.0"
-authors = ["fi3 <email@email.org>"]
+authors = ["The Stratum V2 Developers"]
 edition = "2018"
 description = "Networking utils for SV2 roles"
-license = "MIT OR Apache-2.0"
+documentation = "https://docs.rs/network_helpers_sv2"
+readme = "README.md"
+homepage = "https://stratumprotocol.org"
 repository = "https://github.com/stratum-mining/stratum"
+license = "MIT OR Apache-2.0"
+keywords = ["stratum", "mining", "bitcoin", "protocol"]
+
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -26,3 +31,6 @@ async_std = ["async-std", "async-channel", "binary_sv2", "codec_sv2"]
 with_tokio = ["tokio", "async-channel", "binary_sv2", "codec_sv2"]
 with_serde = ["binary_sv2/with_serde", "serde", "codec_sv2/with_serde"]
 with_buffer_pool = ["codec_sv2/with_buffer_pool"]
+
+[package.metadata.docs.rs]
+all-features = true

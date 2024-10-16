@@ -1,11 +1,15 @@
 [package]
 name = "template_distribution_sv2"
 version = "1.0.2"
-authors = ["fi3 <email@email.org>"]
+authors = ["The Stratum V2 Developers"]
 edition = "2018"
+readme = "README.md"
 description = "Sv2 template distribution subprotocol"
-license = "MIT"
+documentation = "https://docs.rs/template_distribution_sv2"
+license = "MIT OR Apache-2.0"
 repository = "https://github.com/stratum-mining/stratum"
+homepage = "https://stratumprotocol.org"
+keywords = ["stratum", "mining", "bitcoin", "protocol"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -20,3 +24,6 @@ quickcheck_macros = { version = "1", optional=true }
 no_std = []
 with_serde = ["binary_sv2/with_serde", "serde"]
 prop_test = ["quickcheck"]
+
+[package.metadata.docs.rs]
+all-features = true

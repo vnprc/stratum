@@ -7,6 +7,7 @@ use std::{collections::HashMap, net::SocketAddr, sync::Arc};
 
 use async_channel::{bounded, unbounded};
 
+use error::PoolError;
 use mining_pool::{get_coinbase_output, Configuration, Pool};
 use roles_logic_sv2::utils::Mutex;
 use template_receiver::TemplateRx;
@@ -17,6 +18,7 @@ use cdk::{cdk_database::mint_memory::MintMemoryDatabase, nuts::{CurrencyUnit, Mi
 use bip39::Mnemonic;
 
 
+#[derive(Debug, Clone)]
 pub struct PoolSv2 {
     config: Configuration,
     mint: Option<Arc<Mutex<Mint>>>,
@@ -31,7 +33,8 @@ impl PoolSv2 {
             keyset_id: None,
         }
     }
-    pub async fn start(mut self) {
+
+    pub async fn start(&self) -> Result<(), PoolError> {
         let config = self.config.clone();
         let (status_tx, status_rx) = unbounded();
         let (s_new_t, r_new_t) = bounded(10);
@@ -39,13 +42,7 @@ impl PoolSv2 {
         let (s_solution, r_solution) = bounded(10);
         let (s_message_recv_signal, r_message_recv_signal) = bounded(10);
         let coinbase_output_result = get_coinbase_output(&config);
-        let coinbase_output_len = match coinbase_output_result {
-            Ok(coinbase_output) => coinbase_output.len() as u32,
-            Err(err) => {
-                error!("Failed to get Coinbase output: {:?}", err);
-                return;
-            }
-        };
+        let coinbase_output_len = coinbase_output_result?.len() as u32;
         let tp_authority_public_key = config.tp_authority_public_key;
 
         let tp_address: SocketAddr = config.tp_address.parse().unwrap();
@@ -98,7 +95,7 @@ impl PoolSv2 {
                             // we also shut down in case of error
                         },
                     }
-                    break;
+                    break Ok(());
                 }
             };
             let task_status: status::Status = task_status.unwrap();
@@ -110,11 +107,11 @@ impl PoolSv2 {
                         "SHUTDOWN from Downstream: {}\nTry to restart the downstream listener",
                         err
                     );
-                    break;
+                    break Ok(());
                 }
                 status::State::TemplateProviderShutdown(err) => {
                     error!("SHUTDOWN from Upstream: {}\nTry to reconnecting or connecting to a new upstream", err);
-                    break;
+                    break Ok(());
                 }
                 status::State::Healthy(msg) => {
                     info!("HEALTHY message: {}", msg);
@@ -125,7 +122,7 @@ impl PoolSv2 {
                         .safe_lock(|p| p.remove_downstream(downstream_id))
                         .is_err()
                     {
-                        break;
+                        break Ok(());
                     }
                 }
             }

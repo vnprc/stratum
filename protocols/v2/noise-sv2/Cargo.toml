@@ -1,11 +1,15 @@
 [package]
 name = "noise_sv2"
 version = "1.1.0"
-authors = ["fi3 <email@email.org>"]
+authors = ["The Stratum V2 Developers"]
 edition = "2018"
+readme = "README.md"
 description = "Sv2 noise"
-license = "MIT"
+documentation = "https://docs.rs/noise_sv2"
+license = "MIT OR Apache-2.0"
 repository = "https://github.com/stratum-mining/stratum"
+homepage = "https://stratumprotocol.org"
+keywords = ["stratum", "mining", "bitcoin", "protocol"]
 
 [dependencies]
 secp256k1 = { version = "0.28.2", default-features = false, features =["hashes", "alloc","rand","rand-std"] }
@@ -18,3 +22,6 @@ const_sv2 = { version = "^2.0.0", path = "../../../protocols/v2/const-sv2"}
 [dev-dependencies]
 quickcheck = "1.0.3"
 quickcheck_macros = "1"
+
+[package.metadata.docs.rs]
+all-features = true

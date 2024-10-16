@@ -1,11 +1,15 @@
 [package]
 name = "binary_sv2"
 version = "1.2.0"
-authors = ["fi3 <email@email.org>"]
+authors = ["The Stratum V2 Developers"]
 edition = "2018"
+readme = "README.md"
 description = "Sv2 data format"
-license = "MIT"
+documentation = "https://docs.rs/binary_sv2"
+license = "MIT OR Apache-2.0"
 repository = "https://github.com/stratum-mining/stratum"
+homepage = "https://stratumprotocol.org"
+keywords = ["stratum", "mining", "bitcoin", "protocol"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -22,3 +26,6 @@ core = ["binary_codec_sv2", "derive_codec_sv2"]
 with_serde = ["serde_sv2", "serde"]
 prop_test = ["binary_codec_sv2/prop_test", "derive_codec_sv2"]
 with_buffer_pool = ["binary_codec_sv2/with_buffer_pool", "derive_codec_sv2"]
+
+[package.metadata.docs.rs]
+all-features = true
